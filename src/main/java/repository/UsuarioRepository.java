@@ -1,18 +1,25 @@
 package repository;
 
-import dto.UsuarioDto;
+import java.util.List;
 
-public class UsuarioRepository {
-	ContaRepository contaRepository;
+import model.Usuario;
+
+public class UsuarioRepository extends AbstractRepository<Usuario> implements Repository<Usuario> {
+	//ContaRepository contaRepository;
 	
 	public UsuarioRepository() {
-		contaRepository = new ContaRepository();
-		
+		//contaRepository = new ContaRepository();
+	}
+	//ACID
+	@Override
+	public List<Usuario> list() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public void create(UsuarioDto dto) {
-		
-		contaRepository.bulkCreate(dto.getContas());
-		
+	@Override
+	public Usuario find(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

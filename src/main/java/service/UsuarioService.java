@@ -1,11 +1,8 @@
 package service;
 
-import dto.UsuarioDto;
-import model.enums.ContaTipoEnum;
+import model.Usuario;
 
-import java.util.ArrayList;
 
-import dto.ContaDto;
 import repository.UsuarioRepository;
 
 public class UsuarioService {
@@ -16,25 +13,25 @@ public class UsuarioService {
 		usuarioRepository = new UsuarioRepository();
 	}
 	
-	public void create(UsuarioDto dto) {
+	public void create(Usuario dto) {
 		
 		if(validaCampos(dto))
 			throw new RuntimeException(); //Criar uma exception personalizada para isso.
 		
-		criaContasDefault(dto);
+		//criaContasDefault(dto);
 		
-		usuarioRepository.create(dto);
+		usuarioRepository.save(dto);
 	}
-	
-	private void criaContasDefault(UsuarioDto dto) {
+	/*
+	private void criaContasDefault(Usuario dto) {
 		ArrayList<ContaDto> contasDefault = new ArrayList<ContaDto>();
 		contasDefault.add(new ContaDto(ContaTipoEnum.BANCO, dto));
 		contasDefault.add(new ContaDto(ContaTipoEnum.CREDITO, dto));
 		
 		dto.setContas(contasDefault);
 	}
-
-	private boolean validaCampos(UsuarioDto dto) {
+*/
+	private boolean validaCampos(Usuario dto) {
 		
 		if(!validaLogin(dto.getLogin()))
 			return false;
