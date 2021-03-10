@@ -1,9 +1,12 @@
 package model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,8 +21,17 @@ public class Usuario {
 	private String nome;
 	private String cpf;
 	
+	@OneToOne(cascade = CascadeType.PERSIST)
+	private Conta conta;
+	
 	public String getLogin() {
 		return login;
+	}
+	public Conta getConta() {
+		return conta;
+	}
+	public void setConta(Conta conta) {
+		this.conta = conta;
 	}
 	public void setLogin(String login) {
 		this.login = login;

@@ -1,14 +1,7 @@
 package repository;
 
-import java.util.List;
+import model.Conta;
 
-import dto.ContaDto;
-
-public class ContaRepository {
+public class ContaRepository extends AbstractRepository<Conta> implements Repository<Conta> {
 	
-	public void create() {
-	}
-
-	public void bulkCreate(List<ContaDto> listContas) {
-	}
 }

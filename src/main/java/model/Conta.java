@@ -1,14 +1,28 @@
 package model;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import model.enums.ContaTipoEnum;
 
+@Entity
+@Table(name = "conta")
 public class Conta {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String numero;
 	
 	private Double saldo;
+	
+	@Enumerated(EnumType.STRING)
 	private ContaTipoEnum tipo;
-	private Usuario usuario;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -33,11 +47,11 @@ public class Conta {
 	public void setTipo(ContaTipoEnum tipo) {
 		this.tipo = tipo;
 	}
-	public Usuario getUsuario() {
-		return usuario;
-	}
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	
+	public Conta(String numero, ContaTipoEnum tipo) {
+		this.numero = numero;
+		this.tipo = tipo;
+		this.saldo = 0.0;
 	}
 	
 }
