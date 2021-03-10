@@ -55,5 +55,6 @@ public class Usuario {
 		this.cpf = cpf;
 	}
 	
+	public Usuario() {}
 	
 }

@@ -1,11 +1,28 @@
 package model;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import model.enums.TipoMovimentoEnum;
 
+@Entity
+@Table(name = "plano_conta")
 public class PlanoConta {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 	private String nome; // R / D / TU / TC
+	
+	@ManyToOne
 	private Usuario usuario;
 	private boolean padrao;
+	@Enumerated(EnumType.STRING)
 	private TipoMovimentoEnum tipoMovimento;
 	
 	
@@ -34,5 +51,5 @@ public class PlanoConta {
 		this.padrao = padrao;
 	}
 	
-	
+	public PlanoConta() {}
 }

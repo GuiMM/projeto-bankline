@@ -54,4 +54,6 @@ public class Conta {
 		this.saldo = 0.0;
 	}
 	
+	public Conta(){}
+	
 }
