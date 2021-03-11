@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import model.enums.TipoMovimentoEnum;
@@ -19,12 +20,11 @@ public class PlanoConta {
 	private Integer id;
 	private String nome; // R / D / TU / TC
 	
-	@ManyToOne
+	@OneToOne
 	private Usuario usuario;
 	private boolean padrao;
 	@Enumerated(EnumType.STRING)
 	private TipoMovimentoEnum tipoMovimento;
-	
 	
 	public TipoMovimentoEnum getTipoMovimento() {
 		return tipoMovimento;

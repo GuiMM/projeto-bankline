@@ -4,12 +4,16 @@ import dto.LancamentoDto;
 import model.Conta;
 import model.Lancamento;
 import model.PlanoConta;
-import model.TipoMovimento;
+import model.enums.TipoMovimentoEnum;
+import repository.ContaRepository;
+import repository.LancamentoRepository;
 
 public class LancamentoService {
 	public void gravar(LancamentoDto dto) {
 		//CONTA DE BANCO
 		Conta conta = null; //repository.buscarContaPeloId(dto.contaId);
+		LancamentoRepository repositorio = new LancamentoRepository();
+		ContaRepository repositorioConta = new ContaRepository();
 		
 		//somar o saldo ou diminior o saldo
 		
@@ -17,9 +21,9 @@ public class LancamentoService {
 		
 		PlanoConta pc = null; //dto.idPlanoConta;
 		
-		if(pc.getTipoMovimento() == TipoMovimento.R)
+		if(pc.getTipoMovimento() == TipoMovimentoEnum.R)
 			conta.setSaldo(conta.getSaldo() + valor);
-		else if(pc.getTipoMovimento() == TipoMovimento.D)
+		else if(pc.getTipoMovimento() == TipoMovimentoEnum.D)
 			conta.setSaldo(conta.getSaldo() - valor);
 		
 		//TC
@@ -34,10 +38,10 @@ public class LancamentoService {
 		Lancamento lancamento = new Lancamento();
 		//sets
 		
-		repositorio.salvarLancamento(lancamento);
+		repositorio.save(lancamento);
 		
 		//spring data jpa - salve / update - salve
-		repositorioConta.atualizar(conta);
+		repositorioConta.update(conta);
 		
 	}
 }

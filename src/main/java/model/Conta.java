@@ -6,6 +6,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import model.enums.ContaTipoEnum;
@@ -13,12 +14,16 @@ import model.enums.ContaTipoEnum;
 @Entity
 @Table(name = "conta")
 public class Conta {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String numero;
 	
 	private Double saldo;
+	
+	@OneToOne
+	private Usuario usuario;
 	
 	@Enumerated(EnumType.STRING)
 	private ContaTipoEnum tipo;
@@ -28,6 +33,12 @@ public class Conta {
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 	public String getNumero() {
 		return numero;
@@ -56,4 +67,9 @@ public class Conta {
 	
 	public Conta(){}
 	
+//	@Override
+//	public String toString() {
+//		return "Conta [id=" + id + ", numero=" + numero + ", saldo=" + saldo + ", usuario=" + usuario + ", tipo=" + tipo
+//				+ "]";
+//	}
 }
