@@ -44,6 +44,8 @@ public class app {
 //		planoContaRepository.save(planoConta);
 		
 		Usuario usuario = repository.find(1);
+		Boolean possue = repository.validarLogin("login", "senha");
+		System.out.println("POSSUE ?????" + possue);
 		System.out.println(usuario.toString());
 		ContaRepository contaRepo = new ContaRepository(); 
 		LancamentoRepository lancamentoRepo = new LancamentoRepository();
