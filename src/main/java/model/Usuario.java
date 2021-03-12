@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,9 +29,8 @@ public class Usuario {
 	private String cpf;
 	private String telefone;
 	
-	@OneToMany(mappedBy = "usuario", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	private List<Conta> contas = new ArrayList<Conta>();
-	
 	
 	public void addContas(Conta conta) {
 		conta.setUsuario(this);
