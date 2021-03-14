@@ -7,4 +7,5 @@ import com.bankline.model.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 	public Optional <Usuario> findByLogin(String login);
 	public boolean existsByLogin(String login);
+	public boolean existsByCpf(String cpf);
 }
