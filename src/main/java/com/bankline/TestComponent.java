@@ -5,12 +5,16 @@ import org.springframework.stereotype.Component;
 
 import com.bankline.model.Usuario;
 import com.bankline.repository.UsuarioRepository;
+import com.bankline.service.LancamentoService;
 
 @Component
 public class TestComponent {
 	
 	@Autowired
 	private UsuarioRepository repo;
+	
+	@Autowired
+	private LancamentoService serv;
 	
 	public void testUsuario() {
 		Usuario user = new Usuario();
@@ -21,5 +25,7 @@ public class TestComponent {
 		repo.save(user);
 
 		System.out.println("FUNCIONADO");
+		
+		//serv.registerEntry(null);
 	}
 }
