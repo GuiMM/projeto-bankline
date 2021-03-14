@@ -28,6 +28,13 @@ public class Conta {
 	@Enumerated(EnumType.STRING)
 	private ContaTipoEnum tipo;
 	
+	public Conta(String nomeUsuario) {
+		this.numero = nomeUsuario;
+		this.tipo = ContaTipoEnum.BANCO;
+		this.saldo = 0.0;
+	}
+	
+	
 	public Integer getId() {
 		return id;
 	}

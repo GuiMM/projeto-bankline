@@ -11,6 +11,7 @@ public class LancamentoDto {
 	private Integer planoContaId;
 	private Double valor;
 	
+	public LancamentoDto() {}
 	
 	public String getConta() {
 		return conta;

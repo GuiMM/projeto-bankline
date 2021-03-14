@@ -37,7 +37,7 @@ public class Lancamento {
 	public Conta getOrigem() {
 		return conta;
 	}
-	public void setOrigem(Conta origem) {
+	public void setConta(Conta origem) {
 		this.conta = origem;
 	}
 	public Conta getDestino() {
