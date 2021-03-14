@@ -1,6 +1,7 @@
 package com.bankline.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +11,7 @@ import com.bankline.model.Usuario;
 import com.bankline.model.enums.TipoMovimentoEnum;
 import com.bankline.repository.PlanoContaRepository;
 import com.bankline.repository.UsuarioRepository;
+import com.bankline.utils.CpfUtils;
 
 @Service
 public class UsuarioService {
@@ -18,7 +20,14 @@ public class UsuarioService {
 	private UsuarioRepository usuarioRepository;
 	@Autowired
 	private PlanoContaRepository planoContaRepository;
+
+	@Autowired
+	private CpfUtils cpfUtils;
 	
+	@Bean
+	public CpfUtils cpUtils() {
+		return new CpfUtils();
+	}
 	@Transactional
 	public void CriaUsuario(Usuario usuario) throws Exception {
 		
@@ -52,8 +61,7 @@ public class UsuarioService {
 		planoContaTU.setUsuario(usuario);
 		planoContaTU.setNome("Transferencias entre usuarios");
 		planoContaTU.setTipoMovimento(TipoMovimentoEnum.TU);
-		
-		
+
 
 		planoContaRepository.save(planoContaR);
 		planoContaRepository.save(planoContaD);
@@ -62,7 +70,7 @@ public class UsuarioService {
 	}
 
 	private Boolean validateUsuer(Usuario usuario) throws Exception{
-		return validateCpf(usuario) & validateUserName(usuario);
+		return validateCpf(usuario); //& validateUserName(usuario);
 	}
 
 	private boolean validateUserName(Usuario usuario) throws Exception{
@@ -71,7 +79,11 @@ public class UsuarioService {
 	}
 
 	private boolean validateCpf(Usuario usuario) throws Exception{
-		// TODO Auto-generated method stub
+		if (cpfUtils.validarCPF(usuario.getCpf()))
+			return false;
+		if (usuarioRepository.existsByCpf(usuario.getCpf()))
+			return false;
+
 		return true;
 	}
 
