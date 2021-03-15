@@ -31,7 +31,7 @@ public class UsuarioService {
 	@Transactional
 	public void CriaUsuario(Usuario usuario) throws Exception {
 		
-		
+		usuario.setCpf(cpfUtils.formatarCpf(usuario.getCpf()));
 		if(!validateUsuer(usuario))
 			throw new Exception("campos Errados ou duplicados");
 		
