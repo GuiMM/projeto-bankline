@@ -22,18 +22,18 @@ public class TestComponent {
 	
 	public void testUsuario() throws Exception {
 		Usuario user = new Usuario();
-		user.setLogin("Monica");
+		user.setLogin("Adalberto");
 		user.setSenha("senha");
-		user.setCpf("11111111");
-		user.setNome("Monica");
+		user.setCpf("11112111");
+		user.setNome("Adalberto");
 		serv.CriaUsuario(user);
 		
-		Usuario user2 = new Usuario();
-		user.setLogin("Eduardo");
-		user.setSenha("senha");
-		user.setCpf("22222222");
-		user.setNome("Eduardo");
-		serv.CriaUsuario(user2);
+//		Usuario user2 = new Usuario();
+//		user.setLogin("Eduardo");
+//		user.setSenha("senha");
+//		user.setCpf("22222222");
+//		user.setNome("Eduardo");
+//		serv.CriaUsuario(user2);
 
 		System.out.println("FUNCIONADO CRIACAO USUARIO");
 		
