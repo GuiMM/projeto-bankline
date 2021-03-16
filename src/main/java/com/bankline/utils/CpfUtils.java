@@ -10,5 +10,8 @@ public class CpfUtils {
 		else
 		return true;
 	}
-	
+	public static String formatarCpf(String cpf) throws Exception {
+		cpf = cpf.replaceAll("\\D","");
+		return cpf;
+	}
 }
