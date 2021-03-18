@@ -57,4 +57,31 @@ public class TestComponent {
 		System.out.println("FUNCIONADO LANCAMENTO");
 		
 	}
+	
+	public void testLancamentoCredito() throws Exception {	
+		LancamentoDto lancamentoDto = new LancamentoDto();		
+		lancamentoDto.setConta("Eduardo");	
+		lancamentoDto.setValor(120.0);
+		lancamentoDto.setDescricao("Americana Pix");
+		lancamentoDto.setData(new Date());	
+		lancamentoDto.setPlanoContaId(4);
+		lancService.registroEntrada(lancamentoDto);
+		
+		System.out.println(lancamentoDto);		
+	}
+	
+	public void testLancamentoDebito() throws Exception {	
+
+		LancamentoDto lancamentoDto = new LancamentoDto();
+		lancamentoDto.setConta("Eduardo");	
+		lancamentoDto.setValor(60.0);
+		lancamentoDto.setDescricao("salario");
+		lancamentoDto.setData(new Date());	
+		lancamentoDto.setPlanoContaId(2);		
+		
+		lancService.registroEntrada(lancamentoDto);
+		
+		System.out.println(lancamentoDto);
+		
+	}
 }
