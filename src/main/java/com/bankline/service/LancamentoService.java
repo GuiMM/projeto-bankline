@@ -74,8 +74,7 @@ public class LancamentoService {
 		Usuario usuario= usuarioRepo.findByLogin(dto.getConta()).get();
 		Conta conta = usuario.getContas().get(0);		
 		subtraiSaldoLancamento(dto, conta);
-		criaLancamento(dto, plano, conta);
-		adicionaSaldoLancamento(dto, conta);			
+		criaLancamento(dto, plano, conta);			
 		
 	}
 	
