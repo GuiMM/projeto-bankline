@@ -3,6 +3,7 @@ package com.bankline.service;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import org.hibernate.tool.schema.ast.GeneratedSqlScriptParserTokenTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,7 @@ public class LancamentoService {
 	LancamentoRepository lancamentoRepo;
 	
 	@Transactional
-	public void registroEntrada(LancamentoDto dto) {
+	public void registroEntrada( LancamentoDto dto) {
 		
 		PlanoConta plano = planoContaRepo.getOne(dto.getPlanoContaId());
 		
@@ -41,9 +42,9 @@ public class LancamentoService {
 			case("C"):
 				registraCredito(dto,plano);
 				break;
-			case("TC"):
+			/*case("TC"):
 				transfereEntreConta(dto, plano);
-				break;
+				break;*/
 			case("TU"):
 				transfereEntreUsuario(dto, plano);
 				break;
@@ -66,6 +67,20 @@ public class LancamentoService {
 		criaLancamentoOrigem(dto, plano, conta, contaDestino);
 		
 		criaLancamentoDestino(dto, planoDestino, contaDestino);
+		
+	}
+	@Transactional
+	private void registraCredito(LancamentoDto dto, PlanoConta plano) {
+		Usuario usuario= usuarioRepo.findByLogin(dto.getConta()).get();
+		Conta conta = usuario.getContas().get(0);		
+		subtraiSaldoLancamento(dto, conta);
+		criaLancamento(dto, plano, conta);
+		adicionaSaldoLancamento(dto, conta);			
+		
+	}
+	
+	private void registraDebito(LancamentoDto dto, PlanoConta plano) {
+		
 		
 	}
 
@@ -94,15 +109,25 @@ public class LancamentoService {
 		lancamentoRepo.save(lancamentoDestino);
 		
 	}
-	private void criaLancamentoOrigem(LancamentoDto dto, PlanoConta plano, Conta conta, Conta contaDestino) {
+	private void criaLancamentoOrigem(LancamentoDto dto, PlanoConta plano, Conta conta, Conta contaOrigem) {
 		Lancamento lancamentoOrigem = new Lancamento();
 		lancamentoOrigem.setPlanoConta(plano);
 		lancamentoOrigem.setDescricao(dto.getDescricao());
 		lancamentoOrigem.setValor(dto.getValor());
 		lancamentoOrigem.setDate(dto.getData());
-		lancamentoOrigem.setConta(conta);
-		lancamentoOrigem.setDestino(contaDestino);
+		lancamentoOrigem.setConta(contaOrigem);
+		lancamentoOrigem.setDestino(contaOrigem);
 		lancamentoRepo.save(lancamentoOrigem);
+		
+	}
+	private void criaLancamento(LancamentoDto dto, PlanoConta plano, Conta conta) {
+		Lancamento lancamento = new Lancamento();
+		lancamento.setPlanoConta(plano);
+		lancamento.setDescricao(dto.getDescricao());
+		lancamento.setValor(dto.getValor());
+		lancamento.setDate(dto.getData());
+		lancamento.setConta(conta);		
+		lancamentoRepo.save(lancamento);
 		
 	}
 	private PlanoConta criaPlanoContaTransferencia(Usuario usuario, String nomePlanoTransferenciaDestino) {
@@ -117,17 +142,6 @@ public class LancamentoService {
 		
 		return conta;
 	}
-	private void transfereEntreConta(LancamentoDto dto, PlanoConta plano) {
-		// TODO Auto-generated method stub
-	}
+	//private void transfereEntreConta(LancamentoDto dto, PlanoConta plano) {}
 
-	private void registraCredito(LancamentoDto dto, PlanoConta plano) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void registraDebito(LancamentoDto dto, PlanoConta plano) {
-		// TODO Auto-generated method stub
-		
-	}
 }
