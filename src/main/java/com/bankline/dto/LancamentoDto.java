@@ -9,7 +9,7 @@ public class LancamentoDto {
 	private String contaDestino;
 	private String descricao;
 	private Integer planoContaId;
-	private Double valor;
+	private Double valor;	
 	
 	public LancamentoDto() {}
 	
