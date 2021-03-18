@@ -40,7 +40,7 @@ public class LancamentoService {
 			case("D"):
 				registraDebito(dto, plano);
 				break;
-			case("C"):
+			case("R"):
 				registraCredito(dto,plano);
 				break;
 			/*case("TC"):
@@ -74,16 +74,16 @@ public class LancamentoService {
 	private void registraCredito(LancamentoDto dto, PlanoConta plano) {
 		Usuario usuario= usuarioRepo.findByLogin(dto.getConta()).get();
 		Conta conta = usuario.getContas().get(0);		
-		subtraiSaldoLancamento(dto, conta);
-		criaLancamento(dto, plano, conta);			
-		
+		conta.somaSaldo(dto.getValor());
+		contaRepo.save(conta);
+		criaLancamento(dto, plano, conta, conta);			
 	}
 	
 	private void registraDebito(LancamentoDto dto, PlanoConta plano) {
 		Usuario usuario= usuarioRepo.findByLogin(dto.getConta()).get();
 		Conta conta = usuario.getContas().get(0);		
-		adicionaSaldoLancamento(dto, conta);
-		criaLancamento(dto, plano, conta);
+		subtraiSaldoLancamento(dto, conta);
+		criaLancamento(dto, plano, conta, conta);
 		
 	}
 
@@ -123,13 +123,13 @@ public class LancamentoService {
 		lancamentoRepo.save(lancamentoOrigem);
 		
 	}
-	private void criaLancamento(LancamentoDto dto, PlanoConta plano, Conta conta) {
+	private void criaLancamento(LancamentoDto dto, PlanoConta plano, Conta conta, Conta contaOrigem) {
 		Lancamento lancamento = new Lancamento();
 		lancamento.setPlanoConta(plano);
 		lancamento.setDescricao(dto.getDescricao());
 		lancamento.setValor(dto.getValor());
 		lancamento.setDate(dto.getData());
-		lancamento.setConta(conta);		
+		lancamento.setConta(contaOrigem);		
 		lancamentoRepo.save(lancamento);
 		
 	}
