@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bankline.dto.LancamentoDto;
+import com.bankline.exception.SaldoInsuficienteException;
 import com.bankline.model.*;
 import com.bankline.model.enums.TipoMovimentoEnum;
 import com.bankline.repository.ContaRepository;
@@ -30,7 +31,7 @@ public class LancamentoService {
 	LancamentoRepository lancamentoRepo;
 	
 	@Transactional
-	public void registroEntrada(LancamentoDto dto) {
+	public void registroEntrada(LancamentoDto dto) throws SaldoInsuficienteException {
 		
 		PlanoConta plano = planoContaRepo.getOne(dto.getPlanoContaId());
 		
@@ -51,9 +52,13 @@ public class LancamentoService {
 		
 	}
 	@Transactional
-	private void transfereEntreUsuario(LancamentoDto dto, PlanoConta plano) {
+	private void transfereEntreUsuario(LancamentoDto dto, PlanoConta plano) throws SaldoInsuficienteException {
+		
 		Usuario usuario = usuarioRepo.findByLogin(dto.getConta()).get();
 		Conta conta = usuario.getContas().get(0);
+		
+		if(validaSaldoInsuficiente(dto.getValor(), conta))
+			throw new SaldoInsuficienteException();
 		
 		Usuario usuarioDestino = usuarioRepo.findByLogin(dto.getContaDestino()).get();
 		Conta contaDestino = usuarioDestino.getContas().get(0);
@@ -69,6 +74,9 @@ public class LancamentoService {
 		
 	}
 
+	private boolean validaSaldoInsuficiente(Double valor, Conta conta) {
+		return valor > conta.getSaldo() ? true : false;
+	}
 	private void subtraiSaldoLancamento(LancamentoDto dto, Conta conta) {
 		conta.subtraiSaldo(dto.getValor());
 		contaRepo.save(conta);
