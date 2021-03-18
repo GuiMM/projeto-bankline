@@ -24,6 +24,7 @@ public class LancamentoService {
 	PlanoContaRepository planoContaRepo;
 	@Autowired
 	ContaRepository contaRepo;
+	
 	@Autowired
 	UsuarioRepository usuarioRepo;
 	
@@ -79,7 +80,10 @@ public class LancamentoService {
 	}
 	
 	private void registraDebito(LancamentoDto dto, PlanoConta plano) {
-		
+		Usuario usuario= usuarioRepo.findByLogin(dto.getConta()).get();
+		Conta conta = usuario.getContas().get(0);		
+		adicionaSaldoLancamento(dto, conta);
+		criaLancamento(dto, plano, conta);
 		
 	}
 
