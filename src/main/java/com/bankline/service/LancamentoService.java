@@ -32,7 +32,8 @@ public class LancamentoService {
 	@Autowired
 	LancamentoRepository lancamentoRepo;
 	
-	private Gson gson = new Gson();
+	@Autowired
+	private Gson gson; 
 	
 	@Transactional
 	public void registroEntrada( LancamentoDto dto) {
