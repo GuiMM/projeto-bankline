@@ -15,6 +15,7 @@ import com.bankline.repository.ContaRepository;
 import com.bankline.repository.LancamentoRepository;
 import com.bankline.repository.PlanoContaRepository;
 import com.bankline.repository.UsuarioRepository;
+import com.google.gson.Gson;
 
 
 @Service
@@ -30,6 +31,8 @@ public class LancamentoService {
 	
 	@Autowired
 	LancamentoRepository lancamentoRepo;
+	
+	private Gson gson = new Gson();
 	
 	@Transactional
 	public void registroEntrada( LancamentoDto dto) {
@@ -68,6 +71,8 @@ public class LancamentoService {
 		criaLancamentoOrigem(dto, plano, conta, contaDestino);
 		
 		criaLancamentoDestino(dto, planoDestino, contaDestino);
+		String jsonInString = gson.toJson(dto);
+		System.out.println(jsonInString);
 		
 	}
 	@Transactional
@@ -77,6 +82,8 @@ public class LancamentoService {
 		conta.somaSaldo(dto.getValor());
 		contaRepo.save(conta);
 		criaLancamento(dto, plano, conta, conta);			
+		String jsonInString = gson.toJson(dto);
+		System.out.println(jsonInString);
 	}
 	
 	private void registraDebito(LancamentoDto dto, PlanoConta plano) {
@@ -84,6 +91,8 @@ public class LancamentoService {
 		Conta conta = usuario.getContas().get(0);		
 		subtraiSaldoLancamento(dto, conta);
 		criaLancamento(dto, plano, conta, conta);
+		String jsonInString = gson.toJson(dto);
+		System.out.println(jsonInString);
 		
 	}
 
@@ -110,6 +119,7 @@ public class LancamentoService {
 		lancamentoDestino.setDate(dto.getData());
 		lancamentoDestino.setConta(contaDestino);
 		lancamentoRepo.save(lancamentoDestino);
+		
 		
 	}
 	private void criaLancamentoOrigem(LancamentoDto dto, PlanoConta plano, Conta conta, Conta contaOrigem) {
