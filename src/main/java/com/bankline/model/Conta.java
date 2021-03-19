@@ -10,6 +10,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.bankline.model.enums.ContaTipoEnum;
+import com.sun.istack.NotNull;
 
 @Entity
 @Table(name = "conta")
@@ -19,7 +20,6 @@ public class Conta {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String numero;
-	
 	private Double saldo;
 	
 	@OneToOne
@@ -27,12 +27,6 @@ public class Conta {
 	
 	@Enumerated(EnumType.STRING)
 	private ContaTipoEnum tipo;
-	
-	public Conta(String nomeUsuario) {
-		this.numero = nomeUsuario;
-		this.tipo = ContaTipoEnum.BANCO;
-		this.saldo = 0.0;
-	}
 	
 	
 	public Integer getId() {
@@ -65,6 +59,16 @@ public class Conta {
 	public void setTipo(ContaTipoEnum tipo) {
 		this.tipo = tipo;
 	}
+	public void somaSaldo(Double valorLancamento) {
+		this.saldo += valorLancamento;
+	}
+	public void subtraiSaldo(Double valorLancamento) {
+		this.saldo -= valorLancamento;
+	}
+	
+	public Conta(String nomeUsuario) {
+		this(nomeUsuario, ContaTipoEnum.BANCO);
+	}
 	
 	public Conta(String numero, ContaTipoEnum tipo) {
 		this.numero = numero;
@@ -74,9 +78,5 @@ public class Conta {
 	
 	public Conta(){}
 	
-//	@Override
-//	public String toString() {
-//		return "Conta [id=" + id + ", numero=" + numero + ", saldo=" + saldo + ", usuario=" + usuario + ", tipo=" + tipo
-//				+ "]";
-//	}
+
 }
