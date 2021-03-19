@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.sun.istack.NotNull;
+
 @Entity
 @Table(name = "usuario")
 public class Usuario {
@@ -19,12 +22,13 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
+	@Column(length = 20)
 	private String login;
-
+	
 	private String senha;
 	private String nome;
 	private String cpf;
-	private String telefone;
 	
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	private List<Conta> contas = new ArrayList<Conta>();
@@ -41,14 +45,6 @@ public class Usuario {
 		this.login = login;
 	}
 
-	public String getTelefone() {
-		return telefone;
-	}
-	
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-	
 	public List<Conta> getContas() {
 		return contas;
 	}
@@ -79,6 +75,6 @@ public class Usuario {
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", login=" + login + ", senha=" + senha + ", nome=" + nome + ", cpf=" + cpf
-				+ ", telefone=" + telefone + ", contas=" + contas + "]";
+				+ ", contas=" + contas + "]";
 	}
 }

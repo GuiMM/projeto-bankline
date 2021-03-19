@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bankline.dto.LancamentoDto;
+import com.bankline.exception.SaldoInsuficienteException;
 import com.bankline.model.*;
+import com.bankline.model.enums.TipoMovimentoEnum;
 import com.bankline.repository.ContaRepository;
 import com.bankline.repository.LancamentoRepository;
 import com.bankline.repository.PlanoContaRepository;
@@ -29,7 +31,7 @@ public class LancamentoService {
 	LancamentoRepository lancamentoRepo;
 	
 	@Transactional
-	public void registerEntry(LancamentoDto dto) {
+	public void registroEntrada(LancamentoDto dto) throws SaldoInsuficienteException {
 		
 		PlanoConta plano = planoContaRepo.getOne(dto.getPlanoContaId());
 		
@@ -50,34 +52,81 @@ public class LancamentoService {
 		
 	}
 	@Transactional
-	private void transfereEntreUsuario(LancamentoDto dto, PlanoConta plano) {
-		Optional<Usuario> usuario = usuarioRepo.findByLogin(dto.getConta());
-		Conta conta = usuario.get().getContas().get(0);
+	private void transfereEntreUsuario(LancamentoDto dto, PlanoConta plano) throws SaldoInsuficienteException {
 		
-		Optional<Usuario> usuarioDestino = usuarioRepo.findByLogin(dto.getConta());
-		ArrayList<PlanoConta> planos = (ArrayList<PlanoConta>) planoContaRepo.findByUsuario(usuarioDestino.get());
-		Conta contaDestino = usuarioDestino.get().getContas().get(0);
+		Usuario usuario = usuarioRepo.findByLogin(dto.getConta()).get();
+		Conta conta = usuario.getContas().get(0);
 		
+		if(validaSaldoInsuficiente(dto.getValor(), conta))
+			throw new SaldoInsuficienteException();
+		
+		Usuario usuarioDestino = usuarioRepo.findByLogin(dto.getContaDestino()).get();
+		Conta contaDestino = usuarioDestino.getContas().get(0);
+		
+		subtraiSaldoLancamento(dto, conta);
+		adicionaSaldoLancamento(dto, contaDestino);
+		
+		PlanoConta planoDestino = getPlanoDestino(dto, usuarioDestino);
+		
+		criaLancamentoOrigem(dto, plano, conta, contaDestino);
+		
+		criaLancamentoDestino(dto, planoDestino, contaDestino);
+		
+	}
+
+	private boolean validaSaldoInsuficiente(Double valor, Conta conta) {
+		return valor > conta.getSaldo() ? true : false;
+	}
+	private void subtraiSaldoLancamento(LancamentoDto dto, Conta conta) {
+		conta.subtraiSaldo(dto.getValor());
+		contaRepo.save(conta);
+	}
+	private void adicionaSaldoLancamento(LancamentoDto dto, Conta contaDestino) {
+		contaDestino.somaSaldo(dto.getValor());
+		contaRepo.save(contaDestino);
+	}
+	private PlanoConta getPlanoDestino(LancamentoDto dto, Usuario usuarioDestino) {
+		String nomePlanoTransferenciaDestino = "Transferencia de: " + dto.getConta() + "-->" + dto.getContaDestino();
+		ArrayList<PlanoConta> planosDestino = (ArrayList<PlanoConta>) planoContaRepo.findByNome(nomePlanoTransferenciaDestino);
+		PlanoConta planoDestino = planosDestino.isEmpty() ? criaPlanoContaTransferencia(usuarioDestino, nomePlanoTransferenciaDestino) : planosDestino.get(0);
+		
+		return planoDestino;
+	}
+	private void criaLancamentoDestino(LancamentoDto dto, PlanoConta planoDestino, Conta contaDestino) {
+		Lancamento lancamentoDestino = new Lancamento();
+		lancamentoDestino.setPlanoConta(planoDestino);
+		lancamentoDestino.setDescricao(dto.getDescricao());
+		lancamentoDestino.setValor(dto.getValor());
+		lancamentoDestino.setDate(dto.getData());
+		lancamentoDestino.setConta(contaDestino);
+		lancamentoRepo.save(lancamentoDestino);
+		
+	}
+	private void criaLancamentoOrigem(LancamentoDto dto, PlanoConta plano, Conta conta, Conta contaDestino) {
 		Lancamento lancamentoOrigem = new Lancamento();
 		lancamentoOrigem.setPlanoConta(plano);
+		lancamentoOrigem.setDescricao(dto.getDescricao());
+		lancamentoOrigem.setValor(dto.getValor());
 		lancamentoOrigem.setDate(dto.getData());
 		lancamentoOrigem.setConta(conta);
 		lancamentoOrigem.setDestino(contaDestino);
 		lancamentoRepo.save(lancamentoOrigem);
 		
-		Lancamento lancamentoDestino = new Lancamento();
-		lancamentoDestino.setPlanoConta(plano);
-		lancamentoDestino.setDate(dto.getData());
-		lancamentoDestino.setConta(contaDestino);
-		lancamentoRepo.save(lancamentoDestino);
-		
-		
-		
 	}
-
+	private PlanoConta criaPlanoContaTransferencia(Usuario usuario, String nomePlanoTransferenciaDestino) {
+		
+		PlanoConta contaParaSalvar = new PlanoConta();
+		contaParaSalvar.setNome(nomePlanoTransferenciaDestino);
+		contaParaSalvar.setPadrao(false);
+		contaParaSalvar.setTipoMovimento(TipoMovimentoEnum.TU);
+		contaParaSalvar.setUsuario(usuario);
+		
+		PlanoConta conta = planoContaRepo.save(contaParaSalvar);
+		
+		return conta;
+	}
 	private void transfereEntreConta(LancamentoDto dto, PlanoConta plano) {
-		
-		
+		// TODO Auto-generated method stub
 	}
 
 	private void registraCredito(LancamentoDto dto, PlanoConta plano) {

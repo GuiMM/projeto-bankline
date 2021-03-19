@@ -10,6 +10,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.bankline.model.enums.TipoMovimentoEnum;
+import com.sun.istack.NotNull;
 
 @Entity
 @Table(name = "plano_conta")
@@ -17,7 +18,7 @@ public class PlanoConta {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String nome; // R / D / TU / TC
+	private String nome; 
 	
 	@OneToOne
 	private Usuario usuario;

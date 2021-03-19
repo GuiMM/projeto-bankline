@@ -36,7 +36,7 @@ public class UsuarioService {
 			throw new Exception("campos Errados ou duplicados");
 		
 		
-		usuario.addContas(new Conta(usuario.getNome()));
+		usuario.addContas(new Conta(usuario.getLogin()));
 		salvaPlanoContasDefault(usuario);
 		usuarioRepository.save(usuario);
 	}
