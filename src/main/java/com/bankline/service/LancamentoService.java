@@ -30,7 +30,7 @@ public class LancamentoService {
 	@Autowired
 	LancamentoRepository lancamentoRepo;
 	
-	@Transactional
+	
 	public void registroEntrada(LancamentoDto dto) throws SaldoInsuficienteException {
 		
 		PlanoConta plano = planoContaRepo.getOne(dto.getPlanoContaId());

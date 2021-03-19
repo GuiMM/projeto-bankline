@@ -36,7 +36,7 @@ public class Lancamento {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Conta getOrigem() {
+	public Conta getConta() {
 		return conta;
 	}
 	public void setConta(Conta origem) {
