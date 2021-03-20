@@ -1,6 +1,5 @@
 package com.bankline.repository;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,10 +18,8 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Integer>
 			+ "JOIN l.conta c "
 			+ "LEFT JOIN l.destino cd "
 			+ "JOIN l.planoConta pc "
-			+ "WHERE c.id = :contaId and l.date between :inicio and :fim")
-	public List<LancamentoDto> findByContaIdAndDateBetween(@Param("contaId")Integer contaId, @Param("inicio")Date inicio, @Param("fim")Date fim);
+			+ "WHERE c.id = :contaId ")
+	public List<LancamentoDto> findByContaIdAndDateBetween(@Param("contaId")Integer contaId);
 }
 
 
-
-//@Query(value = "SELECT new gama.bankline.dto.MensagemDto (m.conteudo) FROM Mensagem m ")//filtros

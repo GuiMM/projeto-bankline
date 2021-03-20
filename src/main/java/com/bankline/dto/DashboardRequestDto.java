@@ -1,11 +1,9 @@
 package com.bankline.dto;
 
-import java.util.Date;
-
 public class DashboardRequestDto {
 	private String login;
-	private Date dataInicio;
-	private Date dataFim;
+	private String dataInicio;
+	private String dataFim;
 	
 	public String getLogin() {
 		return login;
@@ -13,16 +11,16 @@ public class DashboardRequestDto {
 	public void setLogin(String login) {
 		this.login = login;
 	}
-	public Date getDataInicio() {
+	public String getDataInicio() {
 		return dataInicio;
 	}
-	public void setDataInicio(Date dataInicio) {
+	public void setDataInicio(String dataInicio) {
 		this.dataInicio = dataInicio;
 	}
-	public Date getDataFim() {
+	public String getDataFim() {
 		return dataFim;
 	}
-	public void setDataFim(Date dataFim) {
+	public void setDataFim(String dataFim) {
 		this.dataFim = dataFim;
 	}
 }

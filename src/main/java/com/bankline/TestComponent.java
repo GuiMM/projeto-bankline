@@ -1,6 +1,7 @@
 package com.bankline;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -53,7 +54,7 @@ public class TestComponent {
 		lancamentoDto.setContaDestino("Monica");
 		lancamentoDto.setValor(60.0);
 		lancamentoDto.setDescricao("Transferencia Pix");
-		lancamentoDto.setData(new Date());
+		lancamentoDto.setData(Calendar.getInstance());
 		lancamentoDto.setPlanoContaId(6);
 		lancService.registroEntrada(lancamentoDto);
 		
@@ -61,11 +62,11 @@ public class TestComponent {
 		
 	}
 	
-	public void testDashboard() {
+	public void testDashboard() throws ParseException {
 		DashboardRequestDto dto = new DashboardRequestDto();
 		dto.setLogin("Eduardo");
-		dto.setDataInicio(new Date(2021,01,20));
-		dto.setDataFim(new Date(2021,04,20));
+		dto.setDataInicio("2021-02-25");
+		dto.setDataFim("2021-04-20");
 		DashboardResultDto lancamentos = dashboardService.getDashboard(dto);
 		
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();

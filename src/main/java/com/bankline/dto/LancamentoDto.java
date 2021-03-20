@@ -1,11 +1,14 @@
 package com.bankline.dto;
 
-import java.util.Date;
+import java.util.Calendar;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class LancamentoDto {
 	
 	private String conta;
-	private Date data;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z", timezone="GMT")
+	private Calendar data;
 	private String contaDestino;
 	private String descricao;
 	private Integer planoContaId;
@@ -14,7 +17,7 @@ public class LancamentoDto {
 	
 	public LancamentoDto() {}
 	
-	public LancamentoDto(String conta, String destino, Date data, String descricao, String tipo, Double valor) {
+	public LancamentoDto(String conta, String destino, Calendar data, String descricao, String tipo, Double valor) {
 		this.data = data;
 		this.conta = conta;
 		this.contaDestino = destino;
@@ -29,10 +32,10 @@ public class LancamentoDto {
 	public void setConta(String conta) {
 		this.conta = conta;
 	}
-	public Date getData() {
+	public Calendar getData() {
 		return data;
 	}
-	public void setData(Date data) {
+	public void setData(Calendar data) {
 		this.data = data;
 	}
 	public String getContaDestino() {

@@ -1,7 +1,6 @@
 package com.bankline.service;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bankline.dto.LancamentoDto;
 import com.bankline.exception.SaldoInsuficienteException;
-import com.bankline.model.*;
+import com.bankline.model.Conta;
+import com.bankline.model.Lancamento;
+import com.bankline.model.PlanoConta;
+import com.bankline.model.Usuario;
 import com.bankline.model.enums.TipoMovimentoEnum;
 import com.bankline.repository.ContaRepository;
 import com.bankline.repository.LancamentoRepository;
@@ -33,7 +35,7 @@ public class LancamentoService {
 	
 	public void registroEntrada(LancamentoDto dto) throws SaldoInsuficienteException {
 		
-		PlanoConta plano = planoContaRepo.getOne(dto.getPlanoContaId());
+		PlanoConta plano = planoContaRepo.findById(dto.getPlanoContaId()).get();
 		
 		switch(plano.getTipoMovimento().name()) {
 			case("D"):
@@ -106,7 +108,7 @@ public class LancamentoService {
 		Lancamento lancamentoOrigem = new Lancamento();
 		lancamentoOrigem.setPlanoConta(plano);
 		lancamentoOrigem.setDescricao(dto.getDescricao());
-		lancamentoOrigem.setValor(dto.getValor());
+		lancamentoOrigem.setValor(-1*dto.getValor());
 		lancamentoOrigem.setDate(dto.getData());
 		lancamentoOrigem.setConta(conta);
 		lancamentoOrigem.setDestino(contaDestino);
