@@ -1,14 +1,21 @@
 package com.bankline;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.bankline.dto.DashboardRequestDto;
+import com.bankline.dto.DashboardResultDto;
 import com.bankline.dto.LancamentoDto;
 import com.bankline.model.Usuario;
+import com.bankline.service.DashboardService;
 import com.bankline.service.LancamentoService;
 import com.bankline.service.UsuarioService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 @Component
 public class TestComponent {
@@ -18,6 +25,9 @@ public class TestComponent {
 	
 	@Autowired
 	private LancamentoService lancService;
+	
+	@Autowired
+	private DashboardService dashboardService;
 	
 	public void testUsuario() throws Exception {
 		Usuario user = new Usuario();
@@ -44,11 +54,28 @@ public class TestComponent {
 		lancamentoDto.setContaDestino("Monica");
 		lancamentoDto.setValor(60.0);
 		lancamentoDto.setDescricao("Transferencia Pix");
-		lancamentoDto.setData(new Date());
+		lancamentoDto.setData(Calendar.getInstance());
 		lancamentoDto.setPlanoContaId(6);
 		lancService.registroEntrada(lancamentoDto);
 		
 		System.out.println("FUNCIONADO LANCAMENTO");
 		
+	}
+	
+	public void testDashboard() throws ParseException {
+		DashboardRequestDto dto = new DashboardRequestDto();
+		dto.setLogin("Eduardo");
+		dto.setDataInicio("2021-02-25");
+		dto.setDataFim("2021-04-20");
+		DashboardResultDto lancamentos = dashboardService.getDashboard(dto);
+		
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		try {
+			String json = ow.writeValueAsString(lancamentos);
+			System.out.println(json);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
