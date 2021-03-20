@@ -16,6 +16,9 @@ public class DemoApplication {
     public CommandLineRunner run(TestComponent t) throws Exception {
         return args -> {
         	//t.testUsuario();
+        	t.testLancamento();
+
+        	t.testDashboard();
         };
     }
 }

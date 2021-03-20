@@ -3,22 +3,16 @@ package com.example.tdd;
 import static org.junit.Assert.assertThrows;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
-
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
-
-
 
 import com.bankline.dto.LancamentoDto;
 import com.bankline.exception.SaldoInsuficienteException;
@@ -59,7 +53,7 @@ public class LancamentoServiceTest {
 		lancamentoDto.setContaDestino("Monica");
 		lancamentoDto.setValor(60.0);
 		lancamentoDto.setDescricao("Transferencia Pix");
-		lancamentoDto.setData(new Date());
+		lancamentoDto.setData(Calendar.getInstance());
 		lancamentoDto.setPlanoContaId(6);
 
 		assertThrows(SaldoInsuficienteException.class, () -> lancamentoService.registroEntrada(lancamentoDto));
