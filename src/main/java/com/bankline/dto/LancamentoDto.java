@@ -1,7 +1,6 @@
 package com.bankline.dto;
 
 import java.util.Calendar;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class LancamentoDto {
