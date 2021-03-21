@@ -1,7 +1,11 @@
 package com.bankline.service;
 
+import java.util.Optional;
+import java.util.function.Function;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +33,7 @@ public class UsuarioService {
 	public CpfUtils cpUtils() {
 		return new CpfUtils();
 	}
-
+	
 	@Transactional
 	public void CriaUsuario(Usuario usuario) throws Exception {
 
@@ -69,12 +73,14 @@ public class UsuarioService {
 	}
 
 	private Boolean validateUsuer(Usuario usuario) throws Exception {
-		return validateCpf(usuario); // & validateUserName(usuario);
+		return validateCpf(usuario) & validateUserName(usuario);
 	}
 
 	private boolean validateUserName(Usuario usuario) throws Exception {
-		// TODO Auto-generated method stub
+		if (usuarioRepository.findByLogin(usuario.getLogin()).isEmpty())
 		return true;
+		else
+			return false;
 	}
 
 	private boolean validateCpf(Usuario usuario) throws Exception {
@@ -87,5 +93,10 @@ public class UsuarioService {
 		else
 		return true;
 	}
-
+	
+	public void atualizarSenha(Usuario usuarioObj, String login) {
+		 Usuario usuario = usuarioRepository.findByLogin(login).get();
+			usuario.setSenha(usuarioObj.getSenha());
+			usuarioRepository.save(usuario);
+	}
 }
