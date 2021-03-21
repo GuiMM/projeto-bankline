@@ -31,17 +31,17 @@ public class TestComponent {
 	
 	public void testUsuario() throws Exception {
 		Usuario user = new Usuario();
-		user.setLogin("Monica");
+		user.setLogin("Alessandro");
 		user.setSenha("senha");
-		user.setCpf("11111111");
-		user.setNome("Monica");
+		user.setCpf("11112111");
+		user.setNome("Alessandro");
 		serv.CriaUsuario(user);
 		
 		Usuario user2 = new Usuario();
-		user2.setLogin("Eduardo");
+		user2.setLogin("Manuela");
 		user2.setSenha("senha");
-		user2.setCpf("22222222");
-		user2.setNome("Eduardo");
+		user2.setCpf("22221222");
+		user2.setNome("Manuela");
 		serv.CriaUsuario(user2);
 
 		System.out.println("FUNCIONADO CRIACAO USUARIO");
@@ -74,7 +74,6 @@ public class TestComponent {
 			String json = ow.writeValueAsString(lancamentos);
 			System.out.println(json);
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
