@@ -1,7 +1,11 @@
 package com.bankline.service;
 
+import java.util.Optional;
+import java.util.function.Function;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,19 +21,21 @@ import com.bankline.utils.CpfUtils;
 
 @Service
 public class UsuarioService {
-	
+
 	@Autowired
-	private UsuarioRepository usuarioRepository;
+	public UsuarioRepository usuarioRepository;
+
 	@Autowired
 	private PlanoContaRepository planoContaRepository;
 
 	@Autowired
 	private CpfUtils cpfUtils;
-	
+
 	@Bean
 	public CpfUtils cpUtils() {
 		return new CpfUtils();
 	}
+	
 	@Transactional
 	public void CriaUsuario(Usuario usuario) throws Exception {
 		
@@ -40,18 +46,18 @@ public class UsuarioService {
 		salvaPlanoContasDefault(usuario);
 		usuarioRepository.save(usuario);
 	}
-	
+
 	@Transactional
 	private void salvaPlanoContasDefault(Usuario usuario) {
 		PlanoConta planoContaR = new PlanoConta();
 		PlanoConta planoContaD = new PlanoConta();
 		PlanoConta planoContaTU = new PlanoConta();
-		
+
 		planoContaD.setPadrao(true);
 		planoContaD.setUsuario(usuario);
 		planoContaD.setNome("Despesas");
 		planoContaD.setTipoMovimento(TipoMovimentoEnum.D);
-		
+
 		planoContaR.setPadrao(true);
 		planoContaR.setUsuario(usuario);
 		planoContaR.setNome("Receitas");
@@ -62,11 +68,10 @@ public class UsuarioService {
 		planoContaTU.setNome("Transferencias entre usuarios");
 		planoContaTU.setTipoMovimento(TipoMovimentoEnum.TU);
 
-
 		planoContaRepository.save(planoContaR);
 		planoContaRepository.save(planoContaD);
 		planoContaRepository.save(planoContaTU);
-		
+
 	}
 
 	private void validateUser(Usuario usuario) throws Exception{
@@ -88,6 +93,12 @@ public class UsuarioService {
 		if (usuarioRepository.existsByCpf(usuario.getCpf()))
 			throw new CampoDuplicadoException("CPF já existe na base de dados!");
 
-	}
 
+	}
+	
+	public void atualizarSenha(Usuario usuarioObj, String login) {
+		 Usuario usuario = usuarioRepository.findByLogin(login).get();
+			usuario.setSenha(usuarioObj.getSenha());
+			usuarioRepository.save(usuario);
+	}
 }
