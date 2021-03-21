@@ -1,9 +1,11 @@
 package com.bankline.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +20,6 @@ public class UsuarioController {
 	@Autowired
 	UsuarioService usuarioService;
 	
-	
 	@PostMapping("/")
 	public void post(@RequestBody Usuario usuario) throws Exception {
 		usuarioService.CriaUsuario(usuario);
@@ -31,4 +32,5 @@ public class UsuarioController {
 	}
 	
 		
+
 }

@@ -10,7 +10,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.bankline.model.enums.TipoMovimentoEnum;
-import com.sun.istack.NotNull;
 
 @Entity
 @Table(name = "plano_conta")

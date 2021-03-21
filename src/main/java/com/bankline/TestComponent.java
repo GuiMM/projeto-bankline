@@ -31,17 +31,17 @@ public class TestComponent {
 	
 	public void testUsuario() throws Exception {
 		Usuario user = new Usuario();
-		user.setLogin("Monica");
+		user.setLogin("Alessandro");
 		user.setSenha("senha");
-		user.setCpf("11111111");
-		user.setNome("Monica");
+		user.setCpf("11112111");
+		user.setNome("Alessandro");
 		serv.CriaUsuario(user);
 		
 		Usuario user2 = new Usuario();
-		user2.setLogin("Eduardo");
+		user2.setLogin("Manuela");
 		user2.setSenha("senha");
-		user2.setCpf("22222222");
-		user2.setNome("Eduardo");
+		user2.setCpf("22221222");
+		user2.setNome("Manuela");
 		serv.CriaUsuario(user2);
 
 		System.out.println("FUNCIONADO CRIACAO USUARIO");
@@ -60,6 +60,33 @@ public class TestComponent {
 		
 		System.out.println("FUNCIONADO LANCAMENTO");
 		
+	}	
+
+	public void testLancamentoCredito() throws Exception {	
+		LancamentoDto lancamentoDto = new LancamentoDto();		
+		lancamentoDto.setConta("Eduardo");	
+		lancamentoDto.setValor(120.0);
+		lancamentoDto.setDescricao("Americana Pix");
+		lancamentoDto.setData(Calendar.getInstance());	
+		lancamentoDto.setPlanoContaId(4);
+		lancService.registroEntrada(lancamentoDto);
+		
+		System.out.println(lancamentoDto);		
+	}
+	
+	public void testLancamentoDebito() throws Exception {	
+
+		LancamentoDto lancamentoDto = new LancamentoDto();
+		lancamentoDto.setConta("Eduardo");	
+		lancamentoDto.setValor(60.0);
+		lancamentoDto.setDescricao("salario");
+		lancamentoDto.setData(Calendar.getInstance());	
+		lancamentoDto.setPlanoContaId(2);		
+		
+		lancService.registroEntrada(lancamentoDto);
+		
+		System.out.println(lancamentoDto);
+		
 	}
 	
 	public void testDashboard() throws ParseException {
@@ -74,7 +101,6 @@ public class TestComponent {
 			String json = ow.writeValueAsString(lancamentos);
 			System.out.println(json);
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
