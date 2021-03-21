@@ -1,6 +1,6 @@
 package com.bankline.model;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,16 +11,15 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.sun.istack.NotNull;
-
 @Entity
 @Table(name = "lancamento")
 public class Lancamento {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date date;
+	private Calendar date;
 	private Double valor;
 	private String descricao;
 	@OneToOne
@@ -36,7 +35,7 @@ public class Lancamento {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Conta getOrigem() {
+	public Conta getConta() {
 		return conta;
 	}
 	public void setConta(Conta origem) {
@@ -48,10 +47,10 @@ public class Lancamento {
 	public void setDestino(Conta destino) {
 		this.destino = destino;
 	}
-	public Date getDate() {
+	public Calendar getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(Calendar date) {
 		this.date = date;
 	}
 	public Double getValor() {

@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bankline.exception.CampoDuplicadoException;
+import com.bankline.exception.CampoInvalidoException;
 import com.bankline.model.Conta;
 import com.bankline.model.PlanoConta;
 import com.bankline.model.Usuario;
@@ -32,9 +34,7 @@ public class UsuarioService {
 	public void CriaUsuario(Usuario usuario) throws Exception {
 		
 		usuario.setCpf(cpfUtils.formatarCpf(usuario.getCpf()));
-		if(!validateUsuer(usuario))
-			throw new Exception("campos Errados ou duplicados");
-		
+		validateUser(usuario);
 		
 		usuario.addContas(new Conta(usuario.getLogin()));
 		salvaPlanoContasDefault(usuario);
@@ -69,22 +69,25 @@ public class UsuarioService {
 		
 	}
 
-	private Boolean validateUsuer(Usuario usuario) throws Exception{
-		return validateCpf(usuario); //& validateUserName(usuario);
+	private void validateUser(Usuario usuario) throws Exception{
+		validateUserName(usuario);
+		validateCpf(usuario); 
 	}
 
-	private boolean validateUserName(Usuario usuario) throws Exception{
-		// TODO Auto-generated method stub
-		return true;
+	private void validateUserName(Usuario usuario) throws Exception{
+		if(usuario.getLogin().length() > 20)
+			throw new CampoInvalidoException("login inválido!");
+		if(usuarioRepository.existsByLogin(usuario.getLogin()))
+			throw new CampoDuplicadoException("login já existe na base de dados!");
+				
 	}
 
-	private boolean validateCpf(Usuario usuario) throws Exception{
+	private void validateCpf(Usuario usuario) throws Exception{
 		if (cpfUtils.validarCPF(usuario.getCpf()))
-			return false;
+			throw new CampoInvalidoException("CPF inválido!");
 		if (usuarioRepository.existsByCpf(usuario.getCpf()))
-			return false;
+			throw new CampoDuplicadoException("CPF já existe na base de dados!");
 
-		return true;
 	}
 
 }
