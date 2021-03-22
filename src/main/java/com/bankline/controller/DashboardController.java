@@ -29,8 +29,8 @@ public class DashboardController {
 	}
 
 	@GetMapping("/{login}/{dataInicio}/{dataFim}")
-	public DashboardResultDto dashboardList(@PathVariable String login, @PathVariable String dataInicio,
-			@PathVariable String dataFim) throws ParseException {
+	public DashboardResultDto dashboardList(@PathVariable ("login") String login, @PathVariable ("dataInicio") String dataInicio,
+			@PathVariable ("dataFim") String dataFim) throws ParseException {
 		dashboardRequestDto.setLogin(login);
 		dashboardRequestDto.setDataInicio(dataInicio);
 		dashboardRequestDto.setDataFim(dataFim);
