@@ -8,7 +8,7 @@ import com.bankline.model.PlanoConta;
 import com.bankline.model.Usuario;
 
 public interface PlanoContaRepository extends JpaRepository<PlanoConta, Integer> {
-	public List<PlanoConta> findByUsuario(Usuario usuario);
+	public List<PlanoConta> findByUsuario(Integer id);
 	public List<PlanoConta> findByNome(String nome);
 	
 

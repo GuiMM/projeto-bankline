@@ -131,7 +131,7 @@ public class LancamentoService {
 		lancamentoOrigem.setDescricao(dto.getDescricao());
 		lancamentoOrigem.setValor(-1*dto.getValor());
 		lancamentoOrigem.setDate(dto.getData());
-		lancamentoOrigem.setConta(contaOrigem);
+		lancamentoOrigem.setConta(conta);
 		lancamentoOrigem.setDestino(contaOrigem);
 		lancamentoRepo.save(lancamentoOrigem);
 		

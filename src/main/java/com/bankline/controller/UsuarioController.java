@@ -20,13 +20,13 @@ public class UsuarioController {
 	@Autowired
 	UsuarioService usuarioService;
 	
-	@PostMapping("/")
+	@PostMapping()
 	public void post(@RequestBody Usuario usuario) throws Exception {
 		usuarioService.CriaUsuario(usuario);
 	}
 	
-	@PutMapping(path ="/{login}")
-	public void alterarSenha(@PathVariable String login, @RequestBody Usuario usuario) {
+	@PutMapping("/{login}")
+	public void alterarSenha(@PathVariable ("login") String login, @RequestBody Usuario usuario) {
 		
 		 usuarioService.atualizarSenha(usuario,login);
 	}
