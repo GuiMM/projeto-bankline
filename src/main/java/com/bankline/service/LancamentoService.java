@@ -2,7 +2,6 @@ package com.bankline.service;
 
 import java.util.ArrayList;
 
-import org.hibernate.tool.schema.ast.GeneratedSqlScriptParserTokenTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +17,6 @@ import com.bankline.repository.ContaRepository;
 import com.bankline.repository.LancamentoRepository;
 import com.bankline.repository.PlanoContaRepository;
 import com.bankline.repository.UsuarioRepository;
-import com.google.gson.Gson;
 
 
 @Service
@@ -72,9 +70,9 @@ public class LancamentoService {
 		
 		PlanoConta planoDestino = getPlanoDestino(dto, usuarioDestino);
 		
-		criaLancamentoOrigem(dto, plano, conta, contaDestino);
+		criaLancamentoTransferenciaOrigem(dto, plano, conta, contaDestino);
 		
-		criaLancamentoDestino(dto, planoDestino, contaDestino);
+		criaLancamentoTransferenciaDestino(dto, planoDestino, contaDestino);
 		
 	}
 	
@@ -87,7 +85,7 @@ public class LancamentoService {
 		criaLancamento(dto, plano, conta, conta);			
 
 	}
-	
+	@Transactional
 	private void registraDebito(LancamentoDto dto, PlanoConta plano) {
 		Usuario usuario= usuarioRepo.findByLogin(dto.getConta()).get();
 		Conta conta = usuario.getContas().get(0);		
@@ -114,7 +112,7 @@ public class LancamentoService {
 		
 		return planoDestino;
 	}
-	private void criaLancamentoDestino(LancamentoDto dto, PlanoConta planoDestino, Conta contaDestino) {
+	private void criaLancamentoTransferenciaDestino(LancamentoDto dto, PlanoConta planoDestino, Conta contaDestino) {
 		Lancamento lancamentoDestino = new Lancamento();
 		lancamentoDestino.setPlanoConta(planoDestino);
 		lancamentoDestino.setDescricao(dto.getDescricao());
@@ -125,14 +123,14 @@ public class LancamentoService {
 		
 		
 	}
-	private void criaLancamentoOrigem(LancamentoDto dto, PlanoConta plano, Conta conta, Conta contaOrigem) {
+	private void criaLancamentoTransferenciaOrigem(LancamentoDto dto, PlanoConta plano, Conta conta, Conta contaDestino) {
 		Lancamento lancamentoOrigem = new Lancamento();
 		lancamentoOrigem.setPlanoConta(plano);
 		lancamentoOrigem.setDescricao(dto.getDescricao());
 		lancamentoOrigem.setValor(-1*dto.getValor());
 		lancamentoOrigem.setDate(dto.getData());
-		lancamentoOrigem.setConta(contaOrigem);
-		lancamentoOrigem.setDestino(contaOrigem);
+		lancamentoOrigem.setConta(conta);
+		lancamentoOrigem.setDestino(contaDestino);
 		lancamentoRepo.save(lancamentoOrigem);
 		
 	}
