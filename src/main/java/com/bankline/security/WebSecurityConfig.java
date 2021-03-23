@@ -20,7 +20,7 @@ import com.bankline.security.jwt.JWTAuthorizationFilter;
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig  extends WebSecurityConfigurerAdapter{
-	private static final String[] SWAGGER_WHITELIST = {
+	private static final String[] WHITELIST = {
             "/v2/api-docs",
             "/swagger-resources",
             "/swagger-resources/**",
@@ -28,16 +28,12 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter{
             "/configuration/security",
             "/swagger-ui.html",
             "/webjars/**",
-            "/h2-console/**"
+            "/h2-console/**",
+            "/usuario/login",
+            "/usuario/cadastro"
 	};
 	
-	//Basic Auth com usuario em memoria e sem criptografia
-	/*
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		  auth.inMemoryAuthentication().withUser("user").password("{noop}123").roles("ADMIN");
-	}
-	*/ 
+	
 	
 	//QUANDO QUISER BUSCAR O USARIO DO BANCO DE DADOS
 	@Autowired
@@ -61,19 +57,15 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable()
 		//LIBERANDO A API MANUALMENTE
-		.authorizeRequests().antMatchers("**").permitAll();
+		//.authorizeRequests().antMatchers("**").permitAll();
 		//NECESSARIO PARA HABILITAR O JWT, ALEM DAS DEPENDENCIAS pom.xml
-//		.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
-//		.authorizeRequests()
-//		.antMatchers(SWAGGER_WHITELIST).permitAll()
-		
-		//BASIC AUTH
-		//.anyRequest().authenticated().and().httpBasic()
-		
+		.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+		.authorizeRequests()
+		.antMatchers(WHITELIST).permitAll()
 		//AUTENTICACAO STATELESS
-//		.anyRequest().authenticated()
-//		.and()
-//        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		.anyRequest().authenticated()
+		.and()
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
 		;
 	}
