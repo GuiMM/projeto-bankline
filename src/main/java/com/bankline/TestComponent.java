@@ -31,14 +31,14 @@ public class TestComponent {
 	
 	public void testUsuario() throws Exception {
 		Usuario user = new Usuario();
-		user.setLogin("Alessandro");
+		user.setLogin("Eduardo");
 		user.setSenha("senha");
 		user.setCpf("11112111");
 		user.setNome("Alessandro");
 		serv.CriaUsuario(user);
 		
 		Usuario user2 = new Usuario();
-		user2.setLogin("Manuela");
+		user2.setLogin("Monica");
 		user2.setSenha("senha");
 		user2.setCpf("22221222");
 		user2.setNome("Manuela");
@@ -48,7 +48,7 @@ public class TestComponent {
 		
 	}
 	
-	public void testLancamento() throws Exception {
+	public void testLancamentoTransferencia() throws Exception {
 		LancamentoDto lancamentoDto = new LancamentoDto();
 		lancamentoDto.setConta("Eduardo");
 		lancamentoDto.setContaDestino("Monica");
