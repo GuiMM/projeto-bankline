@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class LancamentoDto {
 	
 	private String conta;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z", timezone="GMT")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT-03:00")
 	private Calendar data;
 	private String contaDestino;
 	private String descricao;
