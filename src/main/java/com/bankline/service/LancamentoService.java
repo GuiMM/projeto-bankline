@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bankline.dto.LancamentoDto;
-import com.bankline.exception.SaldoInsuficienteException;
+import com.bankline.exception.BusinessException;
 import com.bankline.model.Conta;
 import com.bankline.model.Lancamento;
 import com.bankline.model.PlanoConta;
@@ -33,7 +33,7 @@ public class LancamentoService {
 	@Autowired
 	LancamentoRepository lancamentoRepo;
 	
-	public void registroEntrada(LancamentoDto dto) throws SaldoInsuficienteException {
+	public void registroEntrada(LancamentoDto dto) throws BusinessException {
 		
 		PlanoConta plano = planoContaRepo.findById(dto.getPlanoContaId()).get();
 		
@@ -54,13 +54,13 @@ public class LancamentoService {
 		
 	}
 	@Transactional
-	private void transfereEntreUsuario(LancamentoDto dto, PlanoConta plano) throws SaldoInsuficienteException {
+	private void transfereEntreUsuario(LancamentoDto dto, PlanoConta plano) throws BusinessException {
 		
 		Usuario usuario = usuarioRepo.findByLogin(dto.getConta()).get();
 		Conta conta = usuario.getContas().get(0);
 		
 		if(validaSaldoInsuficiente(dto.getValor(), conta))
-			throw new SaldoInsuficienteException();
+			throw new BusinessException("Saldo insuficiente para realizar transferencia");
 		
 		Usuario usuarioDestino = usuarioRepo.findByLogin(dto.getContaDestino()).get();
 		Conta contaDestino = usuarioDestino.getContas().get(0);
