@@ -2,7 +2,6 @@ package com.bankline.service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bankline.dto.LoginDto;
 import com.bankline.dto.Sessao;
-import com.bankline.exception.CampoDuplicadoException;
-import com.bankline.exception.CampoInvalidoException;
+import com.bankline.exception.BusinessException;
 import com.bankline.model.Conta;
 import com.bankline.model.PlanoConta;
 import com.bankline.model.Usuario;
@@ -58,17 +56,19 @@ public class UsuarioService {
 	public Sessao Login(LoginDto login) throws Exception {
 		
 		if (login == null || login.getUsuario().isEmpty() || login.getSenha().isEmpty()) {
-			throw new RuntimeException("Login e senha são requeridos");
+			throw new BusinessException("Login e senha são requeridos");
 		}
 
-		Optional<Usuario> optuser = usuarioRepository.findByLogin(login.getUsuario());
+		Usuario usuario = usuarioRepository.findByLogin(login.getUsuario()).orElse(null);;
 
-		Usuario usuario = optuser.get();
-
+		if (usuario == null) {
+			throw new BusinessException(403,"Login invalido");
+		}
+		
 		boolean senhaOk = encoder.matches(login.getSenha(),usuario.getSenha());
 
 		if (!senhaOk) {
-			throw new CampoInvalidoException("Senha Inválida para o Login " + login.getUsuario());
+			throw new BusinessException(403,"Senha Inválida para o Login " + login.getUsuario());
 		}
 
 		// tempo do token = 1 horas
@@ -99,7 +99,7 @@ public class UsuarioService {
 	}
 	
 	@Transactional
-	public void CriaUsuario(Usuario usuario) throws Exception {
+	public void CriaUsuario(Usuario usuario) throws Exception, BusinessException {
 		
 		usuario.setCpf(cpfUtils.formatarCpf(usuario.getCpf()));
 		String SenhaEncoded = encoder.encode(usuario.getSenha());
@@ -138,24 +138,24 @@ public class UsuarioService {
 
 	}
 
-	private void validateUser(Usuario usuario) throws Exception{
+	private void validateUser(Usuario usuario) throws Exception, BusinessException{
 		validateUserName(usuario);
 		validateCpf(usuario); 
 	}
 
-	private void validateUserName(Usuario usuario) throws Exception{
+	private void validateUserName(Usuario usuario) throws Exception, BusinessException{
 		if(usuario.getLogin().length() > 20)
-			throw new CampoInvalidoException("login inválido!");
+			throw new BusinessException("CPF inválido!");//CampoInvalidoException("login inválido!");
 		if(usuarioRepository.existsByLogin(usuario.getLogin()))
-			throw new CampoDuplicadoException("login já existe na base de dados!");
+			throw new BusinessException("login já existe na base de dados!");
 				
 	}
 
 	private void validateCpf(Usuario usuario) throws Exception{
-		if (cpfUtils.validarCPF(usuario.getCpf()))
-			throw new CampoInvalidoException("CPF inválido!");
+		if (!cpfUtils.isCpfValido(usuario.getCpf()))
+			throw new BusinessException("CPF inválido!");
 		if (usuarioRepository.existsByCpf(usuario.getCpf()))
-			throw new CampoDuplicadoException("CPF já existe na base de dados!");
+			throw new BusinessException("CPF já existe na base de dados!");
 
 
 	}
