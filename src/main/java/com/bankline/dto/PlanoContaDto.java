@@ -1,26 +1,28 @@
 package com.bankline.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.bankline.model.PlanoConta;
 import com.bankline.model.Usuario;
 import com.bankline.model.enums.TipoMovimentoEnum;
 
 public class PlanoContaDto {
-	private String nomeDescricao; 
+	private String nome; 
 	private boolean padrao;
 	private TipoMovimentoEnum tipoMovimento;
-	
-	
-	
-	public PlanoContaDto(String nome, boolean padrao, TipoMovimentoEnum tipoMovimento, String login) {
-		this.nomeDescricao = nome;
+
+	public PlanoContaDto(String nome, TipoMovimentoEnum tipoMovimento, boolean padrao) {
+		this.nome = nome;
 		this.padrao = padrao;
 		this.tipoMovimento = tipoMovimento;
 	}
-	
+
 	public String getNome() {
-		return nomeDescricao;
+		return nome;
 	}
 	public void setNome(String nome) {
-		this.nomeDescricao = nome;
+		this.nome = nome;
 	}
 	public boolean isPadrao() {
 		return padrao;
@@ -34,5 +36,6 @@ public class PlanoContaDto {
 	public void setTipoMovimento(TipoMovimentoEnum tipoMovimento) {
 		this.tipoMovimento = tipoMovimento;
 	}
+
 	
 }

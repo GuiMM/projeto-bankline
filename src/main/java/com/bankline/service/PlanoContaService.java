@@ -1,5 +1,7 @@
 package com.bankline.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ public class PlanoContaService {
 
 	@Autowired
 	PlanoContaRepository planoContaRepository;
+	
 	@Autowired
 	UsuarioRepository usuarioRepository;
 	
@@ -30,10 +33,9 @@ public class PlanoContaService {
 		
 	}
 	
-	public List<PlanoConta> buscarPlanoContas(Integer id){
-	
-		List<PlanoConta> planoConta =  planoContaRepository.findByUsuario(id);
-		return planoConta;
-				
+	public List<PlanoContaDto> ListarPlanosDeContas(String login){
+		List<PlanoContaDto> planoContaDto = new ArrayList<PlanoContaDto>();
+		planoContaDto = planoContaRepository.findByPlanoContaDto(login);
+		return planoContaDto;	
 	}
 }

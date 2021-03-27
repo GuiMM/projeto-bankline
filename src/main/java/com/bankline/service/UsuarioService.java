@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bankline.dto.LoginDto;
 import com.bankline.dto.Sessao;
+import com.bankline.dto.UsuarioDto;
 import com.bankline.exception.BusinessException;
 import com.bankline.model.Conta;
 import com.bankline.model.PlanoConta;
@@ -99,10 +100,12 @@ public class UsuarioService {
 	}
 	
 	@Transactional
-	public void CriaUsuario(Usuario usuario) throws Exception, BusinessException {
-		
-		usuario.setCpf(cpfUtils.formatarCpf(usuario.getCpf()));
-		String SenhaEncoded = encoder.encode(usuario.getSenha());
+	public void CriaUsuario(UsuarioDto dto) throws Exception, BusinessException {
+		Usuario usuario = new Usuario();
+		usuario.setLogin(dto.getLogin());
+		usuario.setNome(dto.getNome());
+		usuario.setCpf(cpfUtils.formatarCpf(dto.getCpf()));
+		String SenhaEncoded = encoder.encode(dto.getSenha());
 		usuario.setSenha(SenhaEncoded);
 		validateUser(usuario);
 		
@@ -160,9 +163,9 @@ public class UsuarioService {
 
 	}
 	
-	public void atualizarSenha(Usuario usuarioObj, String login) {
+	public void atualizarSenha(String senha, String login) {
 		 Usuario usuario = usuarioRepository.findByLogin(login).get();
-			usuario.setSenha(usuarioObj.getSenha());
+			usuario.setSenha(encoder.encode(senha));
 			usuarioRepository.save(usuario);
 	}
 }

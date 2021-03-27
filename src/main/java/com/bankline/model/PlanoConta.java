@@ -3,9 +3,11 @@ package com.bankline.model;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -19,7 +21,7 @@ public class PlanoConta {
 	private Integer id;
 	private String nome; 
 	
-	@OneToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Usuario usuario;
 	private boolean padrao;
 	@Enumerated(EnumType.STRING)
