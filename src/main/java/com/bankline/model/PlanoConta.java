@@ -21,7 +21,7 @@ public class PlanoConta {
 	private Integer id;
 	private String nome; 
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@OneToOne
 	private Usuario usuario;
 	private boolean padrao;
 	@Enumerated(EnumType.STRING)
