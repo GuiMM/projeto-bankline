@@ -21,10 +21,10 @@ public interface PlanoContaRepository extends JpaRepository<PlanoConta, Integer>
 	public Optional<PlanoConta> findById(Integer id);
 	
 	
-	@Query(value = "SELECT new com.bankline.dto.PlanoContaDto (pl.nome, pl.tipoMovimento, pl.padrao) "
+	@Query(value = "SELECT new com.bankline.dto.PlanoContaDto (pl.nome, pl.tipoMovimento) "
 			+ "FROM PlanoConta pl"
 			+ " JOIN pl.usuario usu"
 			+ " WHERE usu.login = :login")   
 	public List<PlanoContaDto> findByPlanoContaDto(@Param("login")String Login);
-
+	//, pl.padrao
 }

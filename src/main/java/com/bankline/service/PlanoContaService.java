@@ -27,7 +27,6 @@ public class PlanoContaService {
 		PlanoConta planoConta = new PlanoConta();
 		planoConta.setUsuario(usuario);
 		planoConta.setNome(dto.getNome());
-		planoConta.setPadrao(dto.isPadrao());
 		planoConta.setTipoMovimento(dto.getTipoMovimento());
 		planoContaRepository.save(planoConta);
 		

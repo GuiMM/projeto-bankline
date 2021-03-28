@@ -53,4 +53,13 @@ public class PlanoConta {
 	}
 	
 	public PlanoConta() {}
+	public PlanoConta(Integer id, String nome, Usuario usuario,TipoMovimentoEnum tipoMovimento) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.usuario = usuario;
+		this.padrao = false;
+		this.tipoMovimento = tipoMovimento;
+	}
+	
 }
