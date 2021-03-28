@@ -20,7 +20,7 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column(length = 20)
 	private String login;
 	
@@ -36,6 +36,10 @@ public class Usuario {
 		contas.add(conta);
 	}
 	
+	public Integer getId() {
+		return id;
+	}
+
 	public String getLogin() {
 		return login;
 	}

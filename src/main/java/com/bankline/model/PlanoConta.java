@@ -3,9 +3,11 @@ package com.bankline.model;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -51,4 +53,13 @@ public class PlanoConta {
 	}
 	
 	public PlanoConta() {}
+	public PlanoConta(Integer id, String nome, Usuario usuario,TipoMovimentoEnum tipoMovimento) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.usuario = usuario;
+		this.padrao = false;
+		this.tipoMovimento = tipoMovimento;
+	}
+	
 }

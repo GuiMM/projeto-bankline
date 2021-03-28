@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.bankline.dto.DashboardRequestDto;
 import com.bankline.dto.DashboardResultDto;
 import com.bankline.dto.LancamentoDto;
+import com.bankline.dto.UsuarioDto;
 import com.bankline.model.Usuario;
 import com.bankline.service.DashboardService;
 import com.bankline.service.LancamentoService;
@@ -30,17 +31,17 @@ public class TestComponent {
 	private DashboardService dashboardService;
 	
 	public void testUsuario() throws Exception {
-		Usuario user = new Usuario();
+		UsuarioDto user = new UsuarioDto();
 		user.setLogin("Eduardo");
 		user.setSenha("senha");
-		user.setCpf("11112111");
+		user.setCpf("11112111493");
 		user.setNome("Alessandro");
 		serv.CriaUsuario(user);
 		
-		Usuario user2 = new Usuario();
+		UsuarioDto user2 = new UsuarioDto();
 		user2.setLogin("Monica");
 		user2.setSenha("senha");
-		user2.setCpf("22221222");
+		user2.setCpf("22221222752");
 		user2.setNome("Manuela");
 		serv.CriaUsuario(user2);
 
