@@ -203,6 +203,12 @@
     - MySQL: 4.0.0
  - Swagger: 0.7.0
 
+### Pré-requisitos
+
+Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
+[Git](https://git-scm.com), [Jdk](https://www.oracle.com/br/java/technologies/javase/javase-jdk8-downloads.html), [Java](https://www.java.com/pt-BR/download/ie_manual.jsp?locale=pt_BR). 
+Além disto é bom ter um editor para trabalhar com o código como [Eclipse](https://www.eclipse.org/downloads/packages/installer)
+
 ## Referências:
 - Layout do README - Link de outra turma de java, compartilhada em aula pelo professor Gleyson: 
   - https://github.com/Team-Multiplayer/account-api/blob/master/README.md
