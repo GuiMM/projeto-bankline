@@ -2,13 +2,12 @@ package com.bankline.service;
 
 import java.util.ArrayList;
 
-import org.hibernate.tool.schema.ast.GeneratedSqlScriptParserTokenTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bankline.dto.LancamentoDto;
-import com.bankline.exception.SaldoInsuficienteException;
+import com.bankline.exception.BusinessException;
 import com.bankline.model.Conta;
 import com.bankline.model.Lancamento;
 import com.bankline.model.PlanoConta;
@@ -18,7 +17,6 @@ import com.bankline.repository.ContaRepository;
 import com.bankline.repository.LancamentoRepository;
 import com.bankline.repository.PlanoContaRepository;
 import com.bankline.repository.UsuarioRepository;
-import com.google.gson.Gson;
 
 
 @Service
@@ -35,7 +33,7 @@ public class LancamentoService {
 	@Autowired
 	LancamentoRepository lancamentoRepo;
 	
-	public void registroEntrada(LancamentoDto dto) throws SaldoInsuficienteException {
+	public void registroEntrada(LancamentoDto dto) throws BusinessException {
 		
 		PlanoConta plano = planoContaRepo.findById(dto.getPlanoContaId()).get();
 		
@@ -56,13 +54,13 @@ public class LancamentoService {
 		
 	}
 	@Transactional
-	private void transfereEntreUsuario(LancamentoDto dto, PlanoConta plano) throws SaldoInsuficienteException {
+	private void transfereEntreUsuario(LancamentoDto dto, PlanoConta plano) throws BusinessException {
 		
 		Usuario usuario = usuarioRepo.findByLogin(dto.getConta()).get();
 		Conta conta = usuario.getContas().get(0);
 		
 		if(validaSaldoInsuficiente(dto.getValor(), conta))
-			throw new SaldoInsuficienteException();
+			throw new BusinessException("Saldo insuficiente para realizar transferencia");
 		
 		Usuario usuarioDestino = usuarioRepo.findByLogin(dto.getContaDestino()).get();
 		Conta contaDestino = usuarioDestino.getContas().get(0);
@@ -72,9 +70,9 @@ public class LancamentoService {
 		
 		PlanoConta planoDestino = getPlanoDestino(dto, usuarioDestino);
 		
-		criaLancamentoOrigem(dto, plano, conta, contaDestino);
+		criaLancamentoTransferenciaOrigem(dto, plano, conta, contaDestino);
 		
-		criaLancamentoDestino(dto, planoDestino, contaDestino);
+		criaLancamentoTransferenciaDestino(dto, planoDestino, contaDestino);
 		
 	}
 	
@@ -87,7 +85,7 @@ public class LancamentoService {
 		criaLancamento(dto, plano, conta, conta);			
 
 	}
-	
+	@Transactional
 	private void registraDebito(LancamentoDto dto, PlanoConta plano) {
 		Usuario usuario= usuarioRepo.findByLogin(dto.getConta()).get();
 		Conta conta = usuario.getContas().get(0);		
@@ -114,7 +112,7 @@ public class LancamentoService {
 		
 		return planoDestino;
 	}
-	private void criaLancamentoDestino(LancamentoDto dto, PlanoConta planoDestino, Conta contaDestino) {
+	private void criaLancamentoTransferenciaDestino(LancamentoDto dto, PlanoConta planoDestino, Conta contaDestino) {
 		Lancamento lancamentoDestino = new Lancamento();
 		lancamentoDestino.setPlanoConta(planoDestino);
 		lancamentoDestino.setDescricao(dto.getDescricao());
@@ -125,14 +123,14 @@ public class LancamentoService {
 		
 		
 	}
-	private void criaLancamentoOrigem(LancamentoDto dto, PlanoConta plano, Conta conta, Conta contaOrigem) {
+	private void criaLancamentoTransferenciaOrigem(LancamentoDto dto, PlanoConta plano, Conta conta, Conta contaDestino) {
 		Lancamento lancamentoOrigem = new Lancamento();
 		lancamentoOrigem.setPlanoConta(plano);
 		lancamentoOrigem.setDescricao(dto.getDescricao());
 		lancamentoOrigem.setValor(-1*dto.getValor());
 		lancamentoOrigem.setDate(dto.getData());
 		lancamentoOrigem.setConta(conta);
-		lancamentoOrigem.setDestino(contaOrigem);
+		lancamentoOrigem.setDestino(contaDestino);
 		lancamentoRepo.save(lancamentoOrigem);
 		
 	}
