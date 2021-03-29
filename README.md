@@ -194,7 +194,7 @@
 - SPRING BOOT
   - Usamos o Spring Boot  que é baseado no framework Spring para facilitar no desenvolvimento da API brankline do projeto final do curso de Java.
   
-  ## Versão Utilizada:
+## 🛠 Ferramentas:
  - Java: 11
  - Maven: 4.0.0
  - Json Web Token: 0.7.0
