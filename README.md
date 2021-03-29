@@ -202,6 +202,7 @@
  - Banco de dados:
     - MySQL: 4.0.0
  - Swagger: 0.7.0
+ - Spring
 
 ### Pré-requisitos
 
