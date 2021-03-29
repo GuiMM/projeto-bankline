@@ -3,10 +3,11 @@ package com.bankline.model;
 import java.util.Calendar;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,11 +23,11 @@ public class Lancamento {
 	private Calendar date;
 	private Double valor;
 	private String descricao;
-	@OneToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private PlanoConta planoConta;
-	@OneToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Conta conta;
-	@OneToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Conta destino;
 	
 	public Integer getId() {
